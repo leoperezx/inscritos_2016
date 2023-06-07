@@ -1,8 +1,8 @@
-# Prueba de habilidad para el cargo de "analísta de datos"
-# en la Universidad Nacional de Colombia sede Bogotá.
-#
-# 
-# Contacto: leoeperez.x@gmail.com
+# # Prueba de habilidad para el cargo de "analísta de datos"
+# # en la Universidad Nacional de Colombia sede Bogotá.
+# #
+# # 
+# # Contacto: leoeperez.x@gmail.com
 
 import pandas as pd
 import plotly.express as px
@@ -78,6 +78,10 @@ df_estudiantes = df.iloc[:,25:33]
 TOTAL_INSCRITOS_2016 = sumarInscritos(df_estudiantes)
 print("Total de inscritos en 2016: \n", TOTAL_INSCRITOS_2016)
 
+# #
+# # Aplicación de filtros
+# #
+
 # inscritos por departamento
 INSCRITOS_X_DEPARTAMENTOS = [ sumarInscritos( filtarDepartamento(df_estudiantes,DEPARTAMENTOS[i])) for i in range( len(DEPARTAMENTOS) ) ]
 # inscritos por municipio
@@ -85,11 +89,7 @@ INSCRITOS_X_MUNICIPIOS = [ sumarInscritos( filtarMunicipio( df_estudiantes,MUNIC
 # programas nacional
 PROGRAMAS_X_DEPARTAMENTO = [sumarInscritos(filtrarPrograma(df,PROGRAMAS[i])) for i in range( len(PROGRAMAS))]
 
-# df_programas = pd.DataFrame(list(zip(PROGRAMAS,PROGRAMAS_X_DEPARTAMENTO)), columns=["Programas","# de inscritos"])
-# DataFrame de programas 
-# df_programas_ordenados = df_programas.sort_values(by=['# de inscritos'], inplace=True, ascending=False)
-
-# print("programas ordenados: \n", df_programas_ordenados)
+# # Filtros por genero
 
 df_Male_Filter = df["Sexo"] == "HOMBRE"
 df_Male = df[df_Male_Filter]
@@ -97,6 +97,7 @@ df_Male = df[df_Male_Filter]
 df_Female_Filter = df["Sexo"] == "MUJER"
 df_Female = df[df_Female_Filter]
 
+# construcción de listas de información
 MALE_X_DEPARTAMENTOS = [ sumarInscritos( filtarDepartamento(df_Male,DEPARTAMENTOS[i])) for i in range( len(DEPARTAMENTOS) ) ]
 FEMALE_X_DEPARTAMENTOS = [ sumarInscritos( filtarDepartamento(df_Female,DEPARTAMENTOS[i])) for i in range( len(DEPARTAMENTOS) ) ]
 
@@ -106,25 +107,28 @@ FEMALE_X_MUNICIPIOS = [ sumarInscritos( filtarMunicipio( df_Female,MUNICIPIOS[i]
 MALE_X_PROGRAMAS = [sumarInscritos(filtrarPrograma(df_Male,PROGRAMAS[i])) for i in range( len(PROGRAMAS))]
 FEMALE_X_PROGRAMAS = [sumarInscritos(filtrarPrograma(df_Female,PROGRAMAS[i])) for i in range( len(PROGRAMAS))]
 
-
+# Cración del [DataFrame] de información por departamentos.
 inscritosDepartamentos = pd.DataFrame( list(zip(DEPARTAMENTOS,MALE_X_DEPARTAMENTOS,FEMALE_X_DEPARTAMENTOS,INSCRITOS_X_DEPARTAMENTOS)), 
                                       columns=["Departamentos","Hombres","Mujeres","Inscritos"])
 
+# Cración del [DataFrame] de información por municipios.
 inscritosMunicipio = pd.DataFrame( list(zip(MUNICIPIOS,MALE_X_MUNICIPIOS,FEMALE_X_MUNICIPIOS, INSCRITOS_X_MUNICIPIOS)), 
                                   columns=["Municipios","Hombres","Mujeres", "Inscritos"])
 
+# Cración del [DataFrame] de información por programas.
 inscritosProgramas = pd.DataFrame( list(zip(PROGRAMAS,MALE_X_PROGRAMAS,FEMALE_X_PROGRAMAS, PROGRAMAS_X_DEPARTAMENTO)), 
                                   columns=["Programas","Hombres","Mujeres", "Inscritos"])
+
 
 # # # # # # # # # # # # # #
 #      G r á f i c a s    #
 # # # # # # # # # # # # # #
 
-
 # #
 # # Preparando la información para realiazar la gráfica No. 2 y 3
 # #
 
+# # Operaciones en bloque para obtener promedios  
 inscritosDepartamentos["Porcentaje_inscritos"] = ((inscritosDepartamentos["Inscritos"]/TOTAL_INSCRITOS_2016)*100)
 inscritosDepartamentos["Porcentaje_hombres"] = ((inscritosDepartamentos["Hombres"]/inscritosDepartamentos["Inscritos"])*100)
 inscritosDepartamentos["Porcentaje_mujeres"] = ((inscritosDepartamentos["Mujeres"]/inscritosDepartamentos["Inscritos"])*100)
@@ -137,18 +141,17 @@ inscritosProgramas["Porcentaje_inscritos"] = (inscritosProgramas["Inscritos"]/TO
 inscritosProgramas["Porcentaje_hombres"] = (inscritosProgramas["Hombres"]/inscritosProgramas["Inscritos"])*100
 inscritosProgramas["Porcentaje_mujeres"] = (inscritosProgramas["Mujeres"]/inscritosProgramas["Inscritos"])*100
 
-
+# Selección de columnas 
 grafica_municipios2 = inscritosMunicipio[["Municipios","Porcentaje_hombres","Porcentaje_mujeres"]]
-
+# Dando formato a los números para una mejor presentación
 grafica_municipios2['Porcentaje_hombres'] = pd.Series([round(val,2) for val in grafica_municipios2["Porcentaje_hombres"]])
 grafica_municipios2['Porcentaje_mujeres'] = pd.Series([round(val,2) for val in grafica_municipios2["Porcentaje_mujeres"]])
-
+# filtro por ciudad
 bog = grafica_municipios2["Municipios"] == "Bogota"
 med = grafica_municipios2["Municipios"] == "Medellín"
 cali = grafica_municipios2["Municipios"] == "Cali"
 pal = grafica_municipios2["Municipios"] == "Palmira"
-
-
+# de dataframe a listas
 Bogota = grafica_municipios2[bog].values.tolist()
 Medellin = grafica_municipios2[med].values.tolist()
 Cali = grafica_municipios2[cali].values.tolist()
@@ -159,16 +162,16 @@ gene_Medellin = Medellin[0]
 gene_Cali = Cali[0]
 gene_Palmira = Palmira[0]
 
-grafica_municipios2 = inscritosMunicipio[["Municipios","Porcentaje_hombres","Porcentaje_mujeres"]]
+# grafica_municipios2 = inscritosMunicipio[["Municipios","Porcentaje_hombres","Porcentaje_mujeres"]]
 
-
-
+# Gráfica 1--------------------
 grafica_municipios1 = inscritosDepartamentos[["Departamentos","Inscritos","Hombres","Mujeres"]]
 fig1 = px.bar(grafica_municipios1, x="Departamentos", y=["Hombres","Mujeres"], title="Inscritos por Departamento")
 fig1.update_layout(barmode='stack')
 fig1.show()
 # fig1.write_html('first_figure.html', auto_open=True)
 
+# Gráfica 2 -------------------
 fig2 = make_subplots(rows=2,cols=2, 
                      specs=[[{"type": "pie"}, {"type": "pie"}],[{"type": "pie"}, {"type": "pie"}]],
                      subplot_titles=("Plot 1","Plot 2","Plot 3","Plot 4"))
@@ -183,6 +186,7 @@ fig2.update_layout(barmode='stack')
 fig2.show()
 # fig2.write_html('second_figure.html', auto_open=True)
 
+# Gráfica 3 -------------------
 fig3 = go.Figure(data=[go.Table(header=dict(values=list(grafica_municipios2.columns),
                                             fill_color='paleturquoise',
                                             align='left'),
@@ -209,6 +213,7 @@ lista_programas = programas_antes_lista
 lista_hombres = Hombres_antes_lista
 lista_mujeres = Mujeres_antes_lista
 
+# Gráfica 4 -------------------
 fig4 =  go.Figure()
 fig4.add_trace(go.Bar(
     y=lista_programas,
@@ -234,3 +239,7 @@ fig4.update_layout(height=900, width=700, yaxis_categoryorder = 'total ascending
 fig4.update_layout(barmode='stack')
 fig4.show()
 # fig3.write_html('third_figure.html', auto_open=True)
+
+# #
+# # FIN
+# #
