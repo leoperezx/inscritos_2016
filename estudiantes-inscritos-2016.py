@@ -169,7 +169,7 @@ grafica_municipios1 = inscritosDepartamentos[["Departamentos","Inscritos","Hombr
 fig1 = px.bar(grafica_municipios1, x="Departamentos", y=["Hombres","Mujeres"], title="Inscritos por Departamento")
 fig1.update_layout(barmode='stack')
 fig1.show()
-# fig1.write_html('first_figure.html', auto_open=True)
+fig1.write_html('figure_1.html', auto_open=True)
 
 # Gráfica 2 -------------------
 fig2 = make_subplots(rows=2,cols=2, 
@@ -179,12 +179,12 @@ fig2.add_trace(go.Pie(values= gene_Bogota[1:3],labels=["Hombres","Mujeres"] ), r
 fig2.add_trace(go.Pie(values= gene_Medellin[1:3],labels=["Hombres","Mujeres"] ), row=2,col=1)
 fig2.add_trace(go.Pie(values= gene_Cali[1:3],labels=["Hombres","Mujeres"] ), row=1,col=2)
 fig2.add_trace(go.Pie(values= gene_Palmira[1:3],labels=["Hombres","Mujeres"] ), row=2,col=2)
-fig2.update_layout(height=700, width=700, title="Porcentajes de inscritos por genero de ciudades importantes")
+fig2.update_layout(height=700, width=700, title="Porcentajes de inscritos por género en ciudades importantes")
 names = {'Plot 1':'Bogotá', 'Plot 2':'Medellín', 'Plot 3':'Cali', 'Plot 4':'Palmira'}
 fig2.for_each_annotation(lambda a: a.update(text = a.text + ': ' + names[a.text]))
 fig2.update_layout(barmode='stack')
 fig2.show()
-# fig2.write_html('second_figure.html', auto_open=True)
+fig2.write_html('figure_2.html', auto_open=True)
 
 # Gráfica 3 -------------------
 fig3 = go.Figure(data=[go.Table(header=dict(values=list(grafica_municipios2.columns),
@@ -194,9 +194,9 @@ fig3 = go.Figure(data=[go.Table(header=dict(values=list(grafica_municipios2.colu
                                           fill_color='lavender',
                                           align='left'))
                                           ])
-fig3.update_layout(height=700, width=600, title="Inscritos por genero por Municipios [%]")
+fig3.update_layout(height=700, width=600, title="Inscritos por género por municipios [%]")
 fig3.show()
-# fig3.write_html('third_figure.html', auto_open=True)
+fig3.write_html('figure_3.html', auto_open=True)
 
 
 # #
@@ -235,10 +235,10 @@ fig4.add_trace(go.Bar(
         line=dict(color='rgba(240, 10, 10, 1.0)', width=2)
     )
 ))
-fig4.update_layout(height=900, width=700, yaxis_categoryorder = 'total ascending', title="Los 10 progrmas mas inscritos (H vs. M)")
+fig4.update_layout(height=900, width=700, yaxis_categoryorder = 'total ascending', title="Los 10 programas académicos más inscritos (H vs. M)")
 fig4.update_layout(barmode='stack')
 fig4.show()
-# fig3.write_html('third_figure.html', auto_open=True)
+fig4.write_html('figure_4.html', auto_open=True)
 
 # #
 # # FIN
